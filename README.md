@@ -7,7 +7,7 @@
 
 Trabalho Integrado de Software V
 - [Parte Web](https://github.com/JonathasSL/SmartParking-web)
-- [Documentaton](https://tisv-smartparking.herokuapp.com/)
+- [Documentation](https://tisv-smartparking.herokuapp.com/)
 
 
 ## :busts_in_silhouette: Authors
