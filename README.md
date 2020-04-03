@@ -15,5 +15,5 @@ Trabalho Integrado de Software V
 - [Lucas Valadares](https://github.com/lucasmhv)
 
 
-[python-versions]: https://img.shields.io/pypi/pyversions/Django?color=olivegreen
+[python-versions]: https://img.shields.io/pypi/pyversions/Django
 [python]: https://www.python.org/downloads/
