@@ -1,13 +1,13 @@
 ## SmartParking - API
 
-[![pythonversions]][python]
+[![pythonversion]][python]
 [![djangoversion]][django]
 [![drfversion]][drf]
 
 
 Trabalho Integrado de Software V
 - [Parte Web](https://github.com/JonathasSL/SmartParking-web)
-- [Documentation](https://tisv-smartparking.herokuapp.com/)
+- [Documentaton]()
 
 
 ## :busts_in_silhouette: Authors
@@ -17,7 +17,7 @@ Trabalho Integrado de Software V
 - [Lucas Valadares](https://github.com/lucasmhv)
 
 
-[pythonversions]: https://img.shields.io/badge/Python-v3.7-%23244e71.svg
+[pythonversion]: https://img.shields.io/badge/Python-v3.7-%23244e71.svg
 [python]: https://www.python.org/downloads/
 [djangoversion]: https://img.shields.io/badge/Django-v3.0-%230C4B33.svg
 [django]: https://docs.djangoproject.com/en/3.0/

@@ -59,5 +59,6 @@ class LogoutUserViewSet(ModelViewSet):
         return User.objects.filter(username=self.request.user.username)
 
     def list(self, request, *args, **kwargs):
-        request.user.auth_token.delete()
+        if request.user.id:
+            request.user.auth_token.delete()
         return Response({'Logout': True}, status=status.HTTP_200_OK)

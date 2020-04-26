@@ -15,7 +15,8 @@ class VehicleViewSet(ModelViewSet):
     http_method_names = ['get', 'post']
 
     def get_queryset(self):
-        return Vehicle.objects.filter(driver__user=self.request.user)
+        return Vehicle.objects.filter(driver__user=self.request.user.id)
+
 
 
 class DriverViewSet(ModelViewSet):
@@ -27,4 +28,7 @@ class DriverViewSet(ModelViewSet):
     http_method_names = ['get', 'post']
 
     def get_queryset(self):
-        return Driver.objects.filter(user=self.request.user)
+        if self.request.user.id:
+            return Driver.objects.filter(user=self.request.user)
+        else:
+            return Driver.objects.all()

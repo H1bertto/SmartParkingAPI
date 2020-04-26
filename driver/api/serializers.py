@@ -1,10 +1,13 @@
-from rest_framework.serializers import ModelSerializer
-from account.api.serializers import UserSerializer
+from rest_framework.serializers import ModelSerializer, ReadOnlyField
+# from account.api.serializers import UserSerializer
 from driver.models import Driver, Vehicle
 
 
 class DriverSerializer(ModelSerializer):
-    user = UserSerializer()
+    # user = UserSerializer()
+    name = ReadOnlyField()
+    email = ReadOnlyField()
+    phone = ReadOnlyField()
 
     class Meta:
         model = Driver

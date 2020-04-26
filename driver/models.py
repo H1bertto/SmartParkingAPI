@@ -10,6 +10,18 @@ class Driver(models.Model):
     created_date_at = models.DateTimeField('Registrado em', auto_now_add=True)
     updated_date_at = models.DateTimeField('Atualizado em', auto_now=True)
 
+    @property
+    def name(self):
+        return self.user.full_name
+
+    @property
+    def email(self):
+        return self.user.email
+
+    @property
+    def phone(self):
+        return self.user.phone
+
     def __str__(self):
         return self.user.email
 

@@ -21,7 +21,10 @@ class ParkingViewSet(ModelViewSet):
         return ParkingSerializer
 
     def get_queryset(self):
-        return Parking.objects.filter(user=self.request.user)
+        if self.request.user.id:
+            return Parking.objects.filter(user=self.request.user)
+        else:
+            return Parking.objects.all()
 
     def create(self, request, *args, **kwargs):
         amount_parking_spots = request.data.pop("amount_parking_spots")
@@ -47,4 +50,7 @@ class ParkingSpotViewSet(ModelViewSet):
     http_method_names = ['get', 'patch']
 
     def get_queryset(self):
-        return ParkingSpot.objects.filter(parking__user=self.request.user)
+        if self.request.user.id:
+            return ParkingSpot.objects.filter(parking__user=self.request.user)
+        else:
+            return ParkingSpot.objects.all()
