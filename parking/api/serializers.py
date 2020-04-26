@@ -6,7 +6,6 @@ from parking.models import ParkingSpot, Parking
 class ParkingSerializer(ModelSerializer):
     user = UserSerializer()
     full_address = ReadOnlyField()
-    amount_parking_spots = ReadOnlyField()
     available_parking_spots = ReadOnlyField()
 
     class Meta:

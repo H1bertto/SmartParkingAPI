@@ -4,8 +4,8 @@ from account.models import User
 
 class Driver(models.Model):
     cpf = models.CharField("CPF", max_length=20)
-    latitude = models.BigIntegerField("Latitude", default=0)
-    longitude = models.BigIntegerField("Longitude", default=0)
+    latitude = models.FloatField("Latitude", default=0.0)
+    longitude = models.FloatField("Longitude", default=0.0)
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Usuário")
     created_date_at = models.DateTimeField('Registrado em', auto_now_add=True)
     updated_date_at = models.DateTimeField('Atualizado em', auto_now=True)
