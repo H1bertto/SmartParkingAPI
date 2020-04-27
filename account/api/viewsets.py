@@ -19,7 +19,8 @@ class UserViewSet(ModelViewSet):
     http_method_names = ['get']
 
     def get_queryset(self):
-        return User.objects.filter(username=self.request.user.username)
+        # return User.objects.filter(username=self.request.user.username)
+        return User.objects.all()
 
 
 class RegisterUserViewSet(ModelViewSet):
@@ -56,8 +57,10 @@ class LogoutUserViewSet(ModelViewSet):
     http_method_names = ['get']
 
     def get_queryset(self):
-        return User.objects.filter(username=self.request.user.username)
+        # return User.objects.filter(username=self.request.user.username)
+        return User.objects.all()
 
     def list(self, request, *args, **kwargs):
-        request.user.auth_token.delete()
+        if request.user.id:
+            request.user.auth_token.delete()
         return Response({'Logout': True}, status=status.HTTP_200_OK)

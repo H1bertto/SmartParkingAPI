@@ -13,11 +13,12 @@ class Parking(models.Model):
     place = models.CharField("Logradouro", max_length=200)
     place_number = models.PositiveIntegerField("Número do Logradouro")
     complement = models.CharField("Complemento", max_length=200, blank=True, null=True)
-    latitude = models.BigIntegerField("Latitude", default=0)
-    longitude = models.BigIntegerField("Longitude", default=0)
+    latitude = models.FloatField("Latitude", default=0.0)
+    longitude = models.FloatField("Longitude", default=0.0)
     opening_time = models.TimeField("Horairo de Abertura")
     closing_time = models.TimeField("Horairo de Fechamento")
     price_per_hour = models.FloatField("Preço por Hora")
+    amount_parking_spots = models.IntegerField("Longitude", default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
     created_date_at = models.DateTimeField('Registrado em', auto_now_add=True)
     updated_date_at = models.DateTimeField('Atualizado em', auto_now=True)
@@ -28,10 +29,6 @@ class Parking(models.Model):
     @property
     def full_address(self):
         return f'{self.place}, Nº{self.place_number}, {self.city}, {self.state} - {self.country}'
-
-    @property
-    def amount_parking_spots(self):
-        return len(ParkingSpot.objects.filter(parking__cnpj=self.cnpj).values_list(flat=True))
 
     @property
     def available_parking_spots(self):
