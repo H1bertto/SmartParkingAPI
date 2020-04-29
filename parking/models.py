@@ -27,6 +27,18 @@ class Parking(models.Model):
         return self.cnpj
 
     @property
+    def name(self):
+        return self.user.full_name
+
+    @property
+    def email(self):
+        return self.user.email
+
+    @property
+    def phone(self):
+        return self.user.phone
+
+    @property
     def full_address(self):
         return f'{self.place}, Nº{self.place_number}, {self.city}, {self.state} - {self.country}'
 

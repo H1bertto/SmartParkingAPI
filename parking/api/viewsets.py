@@ -2,9 +2,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
+from account.models import User
 from rest_framework import status
 from rest_framework import filters
 from parking.models import ParkingSpot, Parking
+from django.contrib.auth.hashers import make_password
 from .serializers import ParkingSerializer, LiteParkingSerializer, ParkingSpotSerializer
 
 
@@ -27,6 +29,17 @@ class ParkingViewSet(ModelViewSet):
         return Parking.objects.all()
 
     def create(self, request, *args, **kwargs):
+        f_name = request.data["name"].split(' ')[0]
+        l_name = request.data["name"].split(' ')[1:]
+        user = User.objects.create(
+            email=request.data["email"],
+            username=request.data["email"],
+            first_name=f_name,
+            last_name=l_name,
+            phone=request.data["phone"],
+            password=make_password(request.data["password"]),
+        )
+        request.data['user'] = user.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

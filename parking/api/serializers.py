@@ -4,7 +4,10 @@ from parking.models import ParkingSpot, Parking
 
 
 class ParkingSerializer(ModelSerializer):
-    user = UserSerializer()
+    # user = UserSerializer()
+    name = ReadOnlyField()
+    email = ReadOnlyField()
+    phone = ReadOnlyField()
     full_address = ReadOnlyField()
     available_parking_spots = ReadOnlyField()
 
