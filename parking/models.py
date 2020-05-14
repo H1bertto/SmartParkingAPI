@@ -2,6 +2,8 @@ from django.db import models
 from account.models import User
 from driver.models import Driver
 from core.models import Status
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class Parking(models.Model):
@@ -18,7 +20,7 @@ class Parking(models.Model):
     opening_time = models.TimeField("Horairo de Abertura")
     closing_time = models.TimeField("Horairo de Fechamento")
     price_per_hour = models.FloatField("Preço por Hora")
-    amount_parking_spots = models.IntegerField("Longitude", default=0)
+    amount_parking_spots = models.IntegerField("Total de Vagas", default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
     created_date_at = models.DateTimeField('Registrado em', auto_now_add=True)
     updated_date_at = models.DateTimeField('Atualizado em', auto_now=True)
@@ -44,11 +46,31 @@ class Parking(models.Model):
 
     @property
     def available_parking_spots(self):
-        return len(ParkingSpot.objects.filter(parking__cnpj=self.cnpj, status=1).values_list(flat=True))
+        return ParkingSpot.objects.filter(parking__cnpj=self.cnpj, status=1).count()
 
     class Meta:
         verbose_name = 'Estacionamento'
         verbose_name_plural = 'Estacionamentos'
+
+
+@receiver(post_save, sender=Parking)
+def create_spots(sender, instance, **kwargs):
+    new_amount_spots = instance.amount_parking_spots
+    old_amount_spots = ParkingSpot.objects.filter(parking=instance).count()
+    status = Status.objects.get(pk=1)
+    add_spots = False
+    if kwargs['created']:
+        amount_spots = instance.amount_parking_spots
+        add_spots = True
+    elif new_amount_spots > old_amount_spots:
+        new_amount_spots -= old_amount_spots
+        add_spots = True
+    if add_spots:
+        ParkingSpot.objects.bulk_create([
+            ParkingSpot(parking=instance, status=status) for x in range(0, new_amount_spots)
+        ],
+            batch_size=new_amount_spots
+        )
 
 
 class ParkingSpot(models.Model):

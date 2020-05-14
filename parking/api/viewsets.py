@@ -61,11 +61,11 @@ class ParkingViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        parking_pk = Parking.objects.get(cnpj=request.data.get("cnpj")).pk
-        ParkingSpot.objects.bulk_create([
-            ParkingSpot(parking=parking_pk, status=1)],
-            batch_size=int(str(request.data["amount_parking_spots"]))
-        )
+        # parking_pk = Parking.objects.get(cnpj=request.data.get("cnpj")).pk
+        # ParkingSpot.objects.bulk_create([
+        #     ParkingSpot(parking=parking_pk, status=1)],
+        #     batch_size=int(str(request.data["amount_parking_spots"]))
+        # )
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
