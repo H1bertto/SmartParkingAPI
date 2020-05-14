@@ -8,6 +8,7 @@ from rest_framework import filters
 from parking.models import ParkingSpot, Parking
 from django.contrib.auth.hashers import make_password
 from .serializers import ParkingSerializer, LiteParkingSerializer, ParkingSpotSerializer
+import math
 
 
 class ParkingViewSet(ModelViewSet):
@@ -26,7 +27,24 @@ class ParkingViewSet(ModelViewSet):
         # if self.request.user.id:
         #     return Parking.objects.filter(user=self.request.user)
         # else:
-        return Parking.objects.all()
+        # return Parking.objects.all()
+
+        # ------------ = ---lat---,---lon---
+        # Point format = 99.999999,99.999999
+        point = self.request.query_params.get('point', False)
+        km = self.request.query_params.get('km', 5000)
+        if point:
+            lat, lon = (float(i) for i in point.split(','))
+            r_earth = 6378000
+            lat_const = 180 / math.pi
+            lon_const = lat_const / math.cos(lat * math.pi / 180)
+            min_latitude = lat - (km / r_earth) * lat_const
+            max_latitude = lat + (km / r_earth) * lat_const
+            min_longitude = lon - (km / r_earth) * lon_const
+            max_longitude = lon + (km / r_earth) * lon_const
+            return Parking.objects.filter(latitude__range=[min_latitude, max_latitude], longitude__range=[min_longitude, max_longitude])
+        else:
+            return Parking.objects.all()
 
     def create(self, request, *args, **kwargs):
         f_name = request.data["name"].split(' ')[0]
