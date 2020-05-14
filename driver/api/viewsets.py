@@ -40,6 +40,7 @@ class DriverViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         f_name = request.data["name"].split(' ')[0]
         l_name = request.data["name"].split(' ')[1:]
+        l_name = ' '.join(l_name)
         user = User.objects.create(
             email=request.data["email"],
             username=request.data["email"],

@@ -32,7 +32,7 @@ class ParkingViewSet(ModelViewSet):
         # ------------ = ---lat---,---lon---
         # Point format = 99.999999,99.999999
         point = self.request.query_params.get('point', False)
-        km = self.request.query_params.get('km', 5) * 1000
+        km = int(self.request.query_params.get('km', '5')) * 1000
         if point:
             lat, lon = (float(i) for i in point.split(','))
             r_earth = 6378000
@@ -49,6 +49,7 @@ class ParkingViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         f_name = request.data["name"].split(' ')[0]
         l_name = request.data["name"].split(' ')[1:]
+        l_name = ' '.join(l_name)
         user = User.objects.create(
             email=request.data["email"],
             username=request.data["email"],
