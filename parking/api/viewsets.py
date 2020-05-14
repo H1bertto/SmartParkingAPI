@@ -32,7 +32,7 @@ class ParkingViewSet(ModelViewSet):
         # ------------ = ---lat---,---lon---
         # Point format = 99.999999,99.999999
         point = self.request.query_params.get('point', False)
-        km = self.request.query_params.get('km', 5000)
+        km = self.request.query_params.get('km', 5) * 1000
         if point:
             lat, lon = (float(i) for i in point.split(','))
             r_earth = 6378000
