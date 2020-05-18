@@ -46,6 +46,7 @@ router.register('bookings', BookingViewSet, basename='bookings')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('login/', obtain_auth_token),
+    path('login/parking/', obtain_auth_token),
+    path('login/driver/', obtain_auth_token),
     path('admin/', admin.site.urls),
 ]
