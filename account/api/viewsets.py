@@ -12,15 +12,15 @@ from .serializers import UserSerializer, RegisterUserSerializer, LogoutUserSeria
 class UserViewSet(ModelViewSet):
 
     serializer_class = UserSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'full_name', 'first_name', 'last_name', 'email', 'phone']
     http_method_names = ['get']
 
     def get_queryset(self):
-        # return User.objects.filter(username=self.request.user.username)
-        return User.objects.all()
+        return User.objects.filter(username=self.request.user.username)
+        # return User.objects.all()
 
 
 class RegisterUserViewSet(ModelViewSet):
@@ -52,13 +52,13 @@ class RegisterUserViewSet(ModelViewSet):
 class LogoutUserViewSet(ModelViewSet):
 
     serializer_class = LogoutUserSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     http_method_names = ['get']
 
     def get_queryset(self):
-        # return User.objects.filter(username=self.request.user.username)
-        return User.objects.all()
+        return User.objects.filter(username=self.request.user.username)
+        # return User.objects.all()
 
     def list(self, request, *args, **kwargs):
         if request.user.id:

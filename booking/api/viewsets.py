@@ -11,8 +11,8 @@ from .serializers import BookingSerializer, LiteBookingSerializer
 class BookingViewSet(ModelViewSet):
 
     queryset = Booking.objects.all()
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post', 'patch']
 
