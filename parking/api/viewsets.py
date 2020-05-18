@@ -13,7 +13,7 @@ import math
 
 class ParkingViewSet(ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post', 'patch']
@@ -43,8 +43,10 @@ class ParkingViewSet(ModelViewSet):
             min_longitude = lon - (km / r_earth) * lon_const
             max_longitude = lon + (km / r_earth) * lon_const
             return Parking.objects.filter(latitude__range=[min_latitude, max_latitude], longitude__range=[min_longitude, max_longitude])
-        else:
+        elif hasattr(self.request.user, 'parking'):
             return Parking.objects.filter(user=self.request.user)
+        else:
+            return Parking.objects.all()
 
     def create(self, request, *args, **kwargs):
         f_name = request.data["name"].split(' ')[0]
