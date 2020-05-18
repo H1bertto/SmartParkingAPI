@@ -13,29 +13,29 @@ from django.contrib.auth.hashers import make_password
 class VehicleViewSet(ModelViewSet):
 
     serializer_class = VehicleSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post']
 
     def get_queryset(self):
-        # return Vehicle.objects.filter(driver__user=self.request.user.id)
-        return Vehicle.objects.all()
+        return Vehicle.objects.filter(driver=self.request.user.driver)
+        # return Vehicle.objects.all()
 
 
 class DriverViewSet(ModelViewSet):
 
     serializer_class = DriverSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post']
 
     def get_queryset(self):
         # if self.request.user.id:
-        #     return Driver.objects.filter(user=self.request.user)
+        return Driver.objects.filter(user=self.request.user)
         # else:
-        return Driver.objects.all()
+        # return Driver.objects.all()
 
     def create(self, request, *args, **kwargs):
         f_name = request.data["name"].split(' ')[0]

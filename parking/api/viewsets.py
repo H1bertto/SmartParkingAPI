@@ -13,8 +13,8 @@ import math
 
 class ParkingViewSet(ModelViewSet):
 
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post', 'patch']
 
@@ -44,7 +44,7 @@ class ParkingViewSet(ModelViewSet):
             max_longitude = lon + (km / r_earth) * lon_const
             return Parking.objects.filter(latitude__range=[min_latitude, max_latitude], longitude__range=[min_longitude, max_longitude])
         else:
-            return Parking.objects.all()
+            return Parking.objects.filter(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         f_name = request.data["name"].split(' ')[0]
@@ -74,13 +74,13 @@ class ParkingViewSet(ModelViewSet):
 class ParkingSpotViewSet(ModelViewSet):
 
     serializer_class = ParkingSpotSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'patch']
 
     def get_queryset(self):
         # if self.request.user.id:
-        #     return ParkingSpot.objects.filter(parking__user=self.request.user)
+        return ParkingSpot.objects.filter(parking__user=self.request.user)
         # else:
-        return ParkingSpot.objects.all()
+        # return ParkingSpot.objects.all()
