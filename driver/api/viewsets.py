@@ -15,7 +15,7 @@ class VehicleViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
-    http_method_names = ['get', 'post']
+    http_method_names = ['get', 'post', 'patch']
 
     def get_serializer_class(self):
         if self.action == 'create' or self.action == 'partial_update':
