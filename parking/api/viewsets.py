@@ -13,7 +13,7 @@ import math
 
 class ParkingViewSet(ModelViewSet):
 
-    # permission_classes = [IsAuthenticated]
+    permission_classes = []
     authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post', 'patch']
