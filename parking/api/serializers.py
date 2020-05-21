@@ -24,6 +24,8 @@ class LiteParkingSerializer(ModelSerializer):
 
 class ParkingSpotSerializer(ModelSerializer):
     # parking = ParkingSerializer()
+    driver_name = ReadOnlyField()
+    status_title = ReadOnlyField()
 
     class Meta:
         model = ParkingSpot

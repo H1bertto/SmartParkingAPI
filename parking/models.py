@@ -81,6 +81,14 @@ class ParkingSpot(models.Model):
     def __str__(self):
         return f'{self.pk}'
 
+    @property
+    def driver_name(self):
+        return self.driver.user.full_name
+
+    @property
+    def status_title(self):
+        return self.status.name
+
     class Meta:
         verbose_name = 'Vaga'
         verbose_name_plural = 'Vagas'
