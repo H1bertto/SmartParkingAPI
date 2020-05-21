@@ -13,7 +13,7 @@ import math
 
 class ParkingViewSet(ModelViewSet):
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post', 'patch']
@@ -47,6 +47,7 @@ class ParkingViewSet(ModelViewSet):
         # elif public:
         #     return Parking.objects.all()
         else:
+            self.permission_classes = [IsAuthenticated]
             return Parking.objects.filter(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
