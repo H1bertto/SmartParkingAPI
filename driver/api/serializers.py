@@ -22,3 +22,9 @@ class VehicleSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class PostVehicleSerializer(ModelSerializer):
+    class Meta:
+        model = Vehicle
+        fields = '__all__'
+
+

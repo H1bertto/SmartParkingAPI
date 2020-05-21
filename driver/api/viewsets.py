@@ -4,7 +4,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
 from driver.models import Driver, Vehicle
 from account.models import User
-from .serializers import DriverSerializer, VehicleSerializer
+from .serializers import DriverSerializer, VehicleSerializer, PostVehicleSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
@@ -12,11 +12,15 @@ from django.contrib.auth.hashers import make_password
 
 class VehicleViewSet(ModelViewSet):
 
-    serializer_class = VehicleSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post']
+
+    def get_serializer_class(self):
+        if self.action == 'create' or self.action == 'partial_update':
+            return PostVehicleSerializer
+        return VehicleSerializer
 
     def get_queryset(self):
         return Vehicle.objects.filter(driver=self.request.user.driver)
