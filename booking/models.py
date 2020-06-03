@@ -12,7 +12,7 @@ class Booking(models.Model):
     parking = models.ForeignKey(Parking, on_delete=models.CASCADE, verbose_name="Estacionamento")
     parking_spot = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE, verbose_name="Vaga")
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, verbose_name="Motorista")
-    # book_to = models.DateTimeField('Reserva para às', blank=True, null=True)
+    book_to = models.DateTimeField('Reserva para às', blank=True, null=True)
     book_code = models.IntegerField('Código da Reserva', blank=True, null=True)
     total_time = models.TimeField("Tempo Total", blank=True, null=True)
     total_price = models.FloatField("Preço Total", default=0)
