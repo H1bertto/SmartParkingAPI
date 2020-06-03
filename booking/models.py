@@ -12,9 +12,11 @@ class Booking(models.Model):
     parking = models.ForeignKey(Parking, on_delete=models.CASCADE, verbose_name="Estacionamento")
     parking_spot = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE, verbose_name="Vaga")
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE, verbose_name="Motorista")
-    book_to = models.TimeField('Reserva para às', blank=True, null=True)
+    book_to = models.DateTimeField('Reserva para às', blank=True, null=True)
+    book_code = models.IntegerField('Código da Reserva', blank=True, null=True)
     total_time = models.TimeField("Tempo Total", blank=True, null=True)
     total_price = models.FloatField("Preço Total", default=0)
+    its_coming_in = models.BooleanField("Está Entrando?", default=False)
     its_coming_out = models.BooleanField("Está Saindo?", default=False)
 
     def __str__(self):
@@ -45,6 +47,10 @@ def update_total_time(sender, instance, **kwargs):
         instance.parking_spot.status = Status.objects.get(pk=2)
         instance.parking_spot.driver = instance.driver
         instance.parking_spot.save()
-    if not instance.its_coming_out and instance.parking_spot.status.pk == 4 and instance.total_time is None:
+    if instance.its_coming_in and instance.total_time is None:
+        from django.utils import timezone
+        instance.check_in = timezone.localtime(timezone.now())
+        instance.its_coming_in = False
+        instance.save()
         instance.parking_spot.status = Status.objects.get(pk=2)
         instance.parking_spot.save()

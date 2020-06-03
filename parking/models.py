@@ -21,7 +21,7 @@ class Parking(models.Model):
     closing_time = models.TimeField("Horairo de Fechamento")
     price_per_hour = models.FloatField("Preço por Hora")
     amount_parking_spots = models.IntegerField("Total de Vagas", default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Usuário")
     created_date_at = models.DateTimeField('Registrado em', auto_now_add=True)
     updated_date_at = models.DateTimeField('Atualizado em', auto_now=True)
 
