@@ -10,6 +10,7 @@ from parking.models import ParkingSpot
 from driver.models import Driver
 from core.models import Status
 from random import randint
+from booking.tasks import realtime_update_spots
 
 
 class BookingViewSet(ModelViewSet):
@@ -49,6 +50,7 @@ class BookingViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
+        realtime_update_spots.delay(request.data['parking'])
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

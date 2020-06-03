@@ -168,7 +168,7 @@ REST_FRAMEWORK = {
 
 # Celery
 CELERY_RESULT_BACKEND = 'django-db'
-CELERY_BROKER_URL = 'redis://h:p922bd68c74dc9b926463915c2a70923f99696c5bce3f5b14f22b58cf23dcee40@ec2-35-171-200-85.compute-1.amazonaws.com:23629'
+CELERY_BROKER_URL = os.getenv('REDIS_URL') if 'REDIS_URL' in os.environ else 'redis://'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
