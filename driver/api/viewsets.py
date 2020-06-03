@@ -30,16 +30,17 @@ class VehicleViewSet(ModelViewSet):
 class DriverViewSet(ModelViewSet):
 
     serializer_class = DriverSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     http_method_names = ['get', 'post']
 
     def get_queryset(self):
-        # if self.request.user.id:
-        return Driver.objects.filter(user=self.request.user)
-        # else:
-        # return Driver.objects.all()
+        if self.action == 'create':
+            return Driver.objects.filter(user=self.request.user)
+        else:
+            self.permission_classes = [IsAuthenticated]
+            return Driver.objects.filter(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         f_name = request.data["name"].split(' ')[0]
