@@ -20,9 +20,8 @@ class Migration(migrations.Migration):
             name='its_coming_in',
             field=models.BooleanField(default=False, verbose_name='Está Entrando?'),
         ),
-        migrations.AlterField(
+        migrations.RemoveField(
             model_name='booking',
             name='book_to',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Reserva para às'),
         ),
     ]
