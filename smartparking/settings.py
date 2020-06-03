@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_results',
+    'django_celery_beat',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -163,6 +165,14 @@ REST_FRAMEWORK = {
         # 'rest_framework.parsers.FileUploadParser',
     ],
 }
+
+# Celery
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = 'redis://h:p922bd68c74dc9b926463915c2a70923f99696c5bce3f5b14f22b58cf23dcee40@ec2-35-171-200-85.compute-1.amazonaws.com:23629'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
 
 # Heroku Dependence
 django_heroku.settings(locals())
