@@ -45,7 +45,7 @@ class ParkingViewSet(ModelViewSet):
             max_longitude = lon + (km / r_earth) * lon_const
             return Parking.objects.filter(latitude__range=[min_latitude, max_latitude], longitude__range=[min_longitude, max_longitude])
         elif public or self.action == 'create':
-            return Parking.objects.filter(pk=public)
+            return Parking.objects.all()
         else:
             self.permission_classes = [IsAuthenticated]
             return Parking.objects.filter(user=self.request.user)
