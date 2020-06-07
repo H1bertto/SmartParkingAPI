@@ -83,7 +83,10 @@ class ParkingSpot(models.Model):
 
     @property
     def driver_name(self):
-        return self.driver.user.full_name
+        if self.driver:
+            return self.driver.user.full_name
+        else:
+            return "---"
 
     @property
     def parking_name(self):
