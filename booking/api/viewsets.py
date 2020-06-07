@@ -29,11 +29,15 @@ class BookingViewSet(ModelViewSet):
     def get_queryset(self):
         # book_code = self.request.query_params.get('book_code', False)
         booked = self.request.query_params.get('booked', False)
+        busy = self.request.query_params.get('busy', False)
         if booked:
             spots = ParkingSpot.objects.filter(parking__user=self.request.user, status_id=4)
             return Booking.objects.filter(parking__user=self.request.user, parking_spot__in=spots)
+        elif busy:
+            spots = ParkingSpot.objects.filter(parking__user=self.request.user, status_id=2)
+            return Booking.objects.filter(parking__user=self.request.user, parking_spot__in=spots)
         else:
-            return Booking.objects.all()
+            return Booking.objects.filter(parking__user=self.request.user)
 
     def create(self, request, *args, **kwargs):
         if ParkingSpot.objects.filter(driver_id=request.data['driver']).count():
@@ -60,12 +64,8 @@ class BookingViewSet(ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-
         if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
-
         return Response(serializer.data)
 
     def list(self, request, *args, **kwargs):
