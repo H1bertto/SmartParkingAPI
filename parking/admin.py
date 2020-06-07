@@ -8,7 +8,7 @@ class ParkingAdmin(admin.ModelAdmin):
 
 
 class ParkingSpotAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'parking', 'status', 'driver']
+    list_display = ['__str__', 'parking_name', 'parking', 'status', 'driver_name', 'driver']
     search_fields = ['status']
 
 

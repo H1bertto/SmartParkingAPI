@@ -95,13 +95,13 @@ class ParkingSpotViewSet(ModelViewSet):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         if request.data.get("its_coming_out", False):
-            register = Booking.objects.filter(parking_spot_id=instance.pk, driver_id=instance.driver.pk, total_price=0)
+            register = Booking.objects.filter(parking_spot_id=instance.pk, driver_id=instance.driver.pk, total_price=0, parking_spot__status_id=2)
             if register.count() == 1:
-                book = Booking.objects.get(parking_spot_id=instance.pk, driver_id=instance.driver.pk, total_price=0)
+                book = Booking.objects.get(parking_spot_id=instance.pk, driver_id=instance.driver.pk, total_price=0, parking_spot__status_id=2)
                 book.its_coming_out = True
                 book.save()
                 return Response({"Exit": "Successful"})
-            return Response({"Exit": "Fail"})
+            return Response({"Exit": "Fail"}, status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)

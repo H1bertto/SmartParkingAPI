@@ -86,6 +86,10 @@ class ParkingSpot(models.Model):
         return self.driver.user.full_name
 
     @property
+    def parking_name(self):
+        return self.parking.parking_name
+
+    @property
     def status_title(self):
         return self.status.name
 
