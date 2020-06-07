@@ -6,6 +6,7 @@ from account.models import User
 from rest_framework import status
 from rest_framework import filters
 from parking.models import ParkingSpot, Parking
+from booking.models import Booking
 from django.contrib.auth.hashers import make_password
 from .serializers import ParkingSerializer, LiteParkingSerializer, ParkingSpotSerializer
 import math
@@ -88,7 +89,22 @@ class ParkingSpotViewSet(ModelViewSet):
     http_method_names = ['get', 'patch']
 
     def get_queryset(self):
-        # if self.request.user.id:
         return ParkingSpot.objects.filter(parking__user=self.request.user).order_by('id')
-        # else:
-        # return ParkingSpot.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if request.data.get("its_coming_out", False):
+            register = Booking.objects.filter(parking_spot_id=instance.pk, driver_id=instance.driver.pk, total_price=0)
+            if register.count() == 1:
+                book = Booking.objects.get(parking_spot_id=instance.pk, driver_id=instance.driver.pk, total_price=0)
+                book.its_coming_out = True
+                book.save()
+                return Response({"Exit": "Successful"})
+            return Response({"Exit": "Fail"})
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+        return Response(serializer.data)
