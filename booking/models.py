@@ -29,15 +29,14 @@ class Booking(models.Model):
 
 @receiver(post_save, sender=Booking)
 def update_total_time(sender, instance, **kwargs):
-    import time
     if instance.its_coming_out:
         # Gera o Valor total a Pagar
-        instance.total_time = instance.check_out - instance.check_in
+        instance.total_time = (instance.check_out - instance.check_in).strftime("%H:%M:%S")
         instance.total_price = (
             int(instance.total_time.seconds//3600) +
             1 if int((instance.total_time.seconds//60) % 60) > 10 else 0
         ) * instance.parking.price_per_hour
-        instance.total_time = f'{time.strftime("%H:%M:%S", time.gmtime(instance.total_time.seconds))}'
+        instance.total_time = f'{instance.total_time}'
         instance.its_coming_out = False
         instance.save()
         # Libera a Vaga
