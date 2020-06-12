@@ -31,7 +31,7 @@ class Booking(models.Model):
 def update_total_time(sender, instance, **kwargs):
     if instance.its_coming_out:
         # Gera o Valor total a Pagar
-        instance.total_time = (instance.check_out - instance.check_in).strftime("%H:%M:%S")
+        instance.total_time = instance.check_out - instance.check_in
         instance.total_price = (
             int(instance.total_time.seconds//3600) +
             1 if int((instance.total_time.seconds//60) % 60) > 10 else 0
